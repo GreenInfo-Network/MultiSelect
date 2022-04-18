@@ -2,6 +2,12 @@
 
 A multi-select UI which expands into checkboxes. Accessibility in mind.
 
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/3117633/163845925-7ddbff56-3f19-4c0b-a544-86add9315790.png)
+
+
+
 ## Quick Start
 
 Use HTML like this:
@@ -32,7 +38,7 @@ $('#checkboxset-location').MultiSelect({
 });
 ```
 
-## QuickStart
+## History & Credits
 
 The original code was a Codepen by rdmchenry: https://codepen.io/rdmchenry/pen/OyzVEx
 
