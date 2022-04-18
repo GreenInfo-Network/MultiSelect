@@ -38,6 +38,16 @@ $('#checkboxset-location').MultiSelect({
 });
 ```
 
+
+## Caveats
+
+The displayed label will not auto-detect its checkboxes having changed, and will not automatically refresh the labels to match the checked boxes. If you programmatically change the checkboxes, call a `change` event on them, and this will refresh the label.
+
+```
+$('#that-multipicker input[type="checkbox"][value="vanilla"]').prop('checked', false).change();
+```
+
+
 ## History & Credits
 
 The original code was a Codepen by rdmchenry: https://codepen.io/rdmchenry/pen/OyzVEx
