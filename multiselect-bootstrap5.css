@@ -1,0 +1,15 @@
+/**
+ * Original code by rdmchenry
+ * https://codepen.io/rdmchenry/pen/OyzVEx
+ * Adapted by GreenInfo Network to include some a11y improvements, new features, and Bootstrap-like styling.
+ * https://github.com/GreenInfo-Network/MultiSelect
+ */
+
+div.multi-select {
+    width: 100%;
+}
+div.multi-select span.toggle {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375em 0.5em;
+}
