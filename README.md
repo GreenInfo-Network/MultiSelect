@@ -28,11 +28,13 @@ Use HTML like this:
 Then JavaScript like this:
 ```
 $('#checkboxset-location').MultiSelect();
-
-$('#checkboxset-location').MultiSelect({
-    allowSelectAll: true,
-});
 ```
+
+## Constructor Options
+
+* `allowSelectAll` -- Set the label for the Select All which will be prepended as the first checkbox. You can also set it to `false` or an emptry string, to not add the Select All checkbox.
+
+* `ariaLabel` -- Manually assign an ARIA label. If absent, the element's "title" attribute will be used (if given).
 
 
 

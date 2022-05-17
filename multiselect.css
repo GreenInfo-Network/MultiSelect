@@ -38,6 +38,10 @@ div.multi-select fieldset {
     background: white;
 }
 
+div.multi-select fieldset legend {
+    display: none;
+}
+
 div.multi-select fieldset input[type="checkbox"] {
 }
 
