@@ -4,7 +4,7 @@ A multi-select UI which expands into checkboxes. Accessibility in mind.
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/3117633/168843379-4e15aef7-6032-4c90-93e4-97b24dc5d3e7.png)
+![image](https://user-images.githubusercontent.com/3117633/168853931-59f36027-02a9-4e9c-bad2-375367082daa.png)
 
 
 
