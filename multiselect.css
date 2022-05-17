@@ -1,80 +1,71 @@
 /**
- * Original code by rdmchenry
- * https://codepen.io/rdmchenry/pen/OyzVEx
- * Adapted by GreenInfo Network to include some a11y improvements, new features, and Bootstrap-like styling.
+ * GreenInfo Network MultiSelect
  * https://github.com/GreenInfo-Network/MultiSelect
+ * Inspired from code by Allison Ravenhall https://codepen.io/a11yally/pen/vmXPMR
  */
 
-* {
-    box-sizing: border-box;
-}
-.multi-select, .multi-select-plugin {
-    display: inline-block;
+div.multi-select {
     position: relative;
 }
-.multi-select legend {
-    display: none;
+
+div.multi-select button {
+    border: 1px solid #ced4da;
+    width: 100%;
+    border-radius: 2px;
+    height: 2.5em;
+    background-color: #fff;
+    position: relative;
+    text-align: left;
 }
-.multi-select > span, .multi-select-plugin > span {
+
+div.multi-select .multi-select-readout {
+    color: black;
+}
+
+div.multi-select .multi-select-readout.multi-select--placeholder {
+    color: silver;
+}
+
+div.multi-select fieldset {
     border: none;
-    background: none;
-    position: relative;
-    padding: 0.25em 0.5em;
-    padding-right: 1.5em;
-    display: block;
-    border: solid 1px #000;
-    cursor: default;
-}
-.multi-select > span > .chevron, .multi-select-plugin > span > .chevron {
-    display: inline-block;
-    transform: rotate(-90deg) scale(1, 2) translate(-50%, 0);
-    font-weight: bold;
-    font-size: 0.75em;
+    padding-left: 0;
+    margin-left: 0;
+
     position: absolute;
-    top: 0.2em;
-    right: 0.75em;
-}
-.multi-select ul, .multi-select-plugin ul {
-    position: absolute;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    top: 2.2rem;
     left: 0;
-    top: 100%;
-    min-width: 100%;
-    z-index: 1000;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    display: none;
-    max-height: 320px;
-    overflow-x: hidden;
+    z-index: 1;
+    background: white;
+}
+
+div.multi-select fieldset input[type="checkbox"] {
+}
+
+div.multi-select fieldset {
+    border: 1px solid #ced4da;
+    width: 100%;
+    border-radius: 2px;
+
+    max-height: 1in;
     overflow-y: auto;
 }
-.multi-select ul > li, .multi-select-plugin ul > li {
-    white-space: nowrap;
-}
-.multi-select ul > li.selected > label, .multi-select-plugin ul > li.selected > label {
-    background-color: LightBlue;
-}
-.multi-select ul > li.focused > label, .multi-select-plugin ul > li.focused > label {
-    background-color: DodgerBlue;
-}
-.multi-select ul > li > label, .multi-select-plugin ul > li > label {
-    padding: 0 0.5em;
+
+div.multi-select fieldset label {
     display: block;
+    width: 100%;
+    padding: 0 10px 0 5px;
 }
-.multi-select ul > li > label:focus, .multi-select-plugin ul > li > label:focus, .multi-select ul > li > label:hover, .multi-select-plugin ul > li > label:hover {
-    background-color: DodgerBlue;
+
+div.multi-select .multi-select-arrow {
+    position: absolute;
+    right: 1em;
+    top: 0.9em;
+    color: #a8a8a8;
+    transition: transform .2s ease-out, color .2s ease-out;
+    font-size: 0.85em;
 }
-.multi-select.in ul, .multi-select-plugin.in ul {
-    display: block;
-}
-.multi-select-backdrop, .multi-select-plugin-backdrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 900;
+
+div.multi-select .multi-select-arrow--open {
+  transform: rotate(-180deg) translate(0, 2px);
+  color: #404040;
 }

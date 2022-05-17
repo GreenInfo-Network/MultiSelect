@@ -1,326 +1,90 @@
 /**
- * Original code by rdmchenry
- * https://codepen.io/rdmchenry/pen/OyzVEx
- * Adapted by GreenInfo Network to include some a11y improvements, new features, and Bootstrap-like styling.
+ * GreenInfo Network MultiSelect
  * https://github.com/GreenInfo-Network/MultiSelect
+ * Inspired from code by Allison Ravenhall https://codepen.io/a11yally/pen/vmXPMR
  */
 
 (function($){
-	'use strict';
-	
-	const DataStatePropertyName = 'multiselect';
-	const EventNamespace = '.multiselect';
-	const PluginName = 'MultiSelect';
-	
-	var old = $.fn[PluginName];
-	$.fn[PluginName] = plugin;
-    $.fn[PluginName].Constructor = MultiSelect;
-    $.fn[PluginName].noConflict = function () {
-        $.fn[PluginName] = old;
-        return this;
-    };
+   $.fn.MultiSelect = function () {
+		const $container = $(this);
+		const $button = $container.children('button').first();
+		const $readout = $button.children('span').first();
+		const $arrow = $button.children('span').last();
+		const $fieldset = $container.children('fieldset').first();
+		const $optiondiv = $fieldset.children('div').first();
+		const $checkboxes = $optiondiv.find('input[type="checkbox"]');
 
-    // Defaults
-    $.fn[PluginName].defaults = {
-        
-    };
-	
-	// Static members
-    $.fn[PluginName].EventNamespace = function () {
-        return EventNamespace.replace(/^\./ig, '');
-    };
-    $.fn[PluginName].GetNamespacedEvents = function (eventsArray) {
-        return getNamespacedEvents(eventsArray);
-    };
-	
-	function getNamespacedEvents(eventsArray) {
-        var event;
-        var namespacedEvents = "";
-        while (event = eventsArray.shift()) {
-            namespacedEvents += event + EventNamespace + " ";
-        }
-        return namespacedEvents.replace(/\s+$/g, '');
-    }
-	
-	function plugin(option) {
-        this.each(function () {
-            var $target = $(this);
-            var multiSelect = $target.data(DataStatePropertyName);
-            var options = (typeof option === typeof {} && option) || {};
+		// add starting CSS classes
+		$container.addClass('multi-select');
 
-			options.defaultLabelText = $target.children('span.toggle').children('label').text();
+		$arrow.addClass('fa fa-chevron-down').prop('aria-hidden', 'true');
 
-            if (!multiSelect) {
-                $target.data(DataStatePropertyName, multiSelect = new MultiSelect(this, options));
-            }
+		$arrow.addClass('multi-select-arrow');
+		$button.prop('type', 'button').prop('aria-expanded', 'false');
 
-            if (typeof option === typeof "") {
-                if (!(option in multiSelect)) {
-                    throw "MultiSelect does not contain a method named '" + option + "'";
-                }
-                return multiSelect[option]();
-            }
-        });
-    }
+		$readout.addClass('multi-select-readout');
 
-    function MultiSelect(element, options) {
-        this.$element = $(element);
-        this.options = $.extend({}, $.fn[PluginName].defaults, options);
-        this.destroyFns = [];
-		
-		this.$toggle = this.$element.children('.toggle');
-		this.$toggle.attr('id', this.$element.attr('id') + 'multi-select-label');
-		this.$backdrop = null;
-		this.$allToggle = null;
-
-        init.apply(this);
-    }
-	
-	MultiSelect.prototype.open = open;
-	MultiSelect.prototype.close = close;
-	
-	function init() {
-		this.$element
-		.addClass('multi-select')
-		.attr('tabindex', 0);
-		
-        initAria.apply(this);
-		initEvents.apply(this);
-		updateLabel.apply(this);
-
-		if (this.options.enableToggleAll) {
-			injectToggleAll.apply(this);
+		// add the click trigger, then hide the options list
+		function openOptionsPanel () {
+			$button.attr('aria-expanded', 'true');
+			$fieldset.css('display', 'block');
+			$arrow.addClass('multi-select-arrow--open');
 		}
-		
-		this.destroyFns.push(function() {
-			return '|'
+		function closeOptionsPanel () {
+			$button.attr('aria-expanded', 'false');
+			$fieldset.css('display', 'none');
+			$arrow.removeClass('multi-select-arrow--open');
+		}
+
+		$button.on('click', function () {
+			const showing = $button.attr('aria-expanded') == 'true';
+			if (showing) closeOptionsPanel();
+			else openOptionsPanel();
 		});
-    }
-	
-	function injectToggleAll() {
-		if(this.$allToggle && !this.$allToggle.parent()) {
-			this.$allToggle = null;
-		}
-		
-		this.$allToggle = $("<li><label><input type='checkbox'/>(all)</label><li>");
-		
-		this.$element
-		.find('ul:first')
-		.prepend(this.$allToggle);
-	}
-	
-	function initAria() {
-		this.$element
-		.attr('role', 'combobox')
-		.attr('aria-multiselect', true)
-		.attr('aria-expanded', false)
-		.attr('aria-haspopup', false)
-		.attr('aria-labeledby', this.$element.attr("aria-labeledby") + " " + this.$toggle.attr('id'));
-		
-		this.$toggle
-		.attr('aria-label', '');
-	}
-	
-	function initEvents() {
-		var that = this;
-		this.$element
-		.on(getNamespacedEvents(['click']), function($event) {	
-			if($event.target !== that.$toggle[0] && !that.$toggle.has($event.target).length) {
-				return;
-			}			
+		closeOptionsPanel();
 
-			if($(this).hasClass('in')) {
-				that.close();
+		// set ARIA label
+		// when checkboxes change, update the button with a readout of how many are selected
+		// then call it now to update the readout with the same ARIA label
+		const arialabel = $container.attr('title');
+		if (arialabel) {
+			$button.prop('aria-label', arialabel);
+			$fieldset.prop('aria-label', arialabel);
+		}
+
+		function updateReadout () {
+			const howmany = $checkboxes.filter(':checked').length;
+			if (howmany == 0) {
+				$readout.text(arialabel);
+				$button.addClass('multi-select--placeholder');
 			} else {
-				that.open();
+				$readout.text(`${arialabel}, ${howmany} selected`);
+				$button.removeClass('multi-select--placeholder');
 			}
-		})
-		.on(getNamespacedEvents(['keydown']), function($event) {
-			var next = false;
-			switch($event.keyCode) {
-				case 13: 
-					if($(this).hasClass('in')) {
-						that.close();
-					} else {
-						that.open();
-					}
-					break;
-				case 9:
-					if($event.target !== that.$element[0]	) {
-						$event.preventDefault();
-					}
-				case 27:
-					that.close();
-					break;
-				case 40:
-					next = true;
-				case 38:
-					var $items = $(this)
-					.children("ul:first")
-					.find(":input, button, a");
+		}
 
-					var foundAt = $.inArray(document.activeElement, $items);				
-					if(next && ++foundAt === $items.length) {
-						foundAt = 0;
-					} else if(!next && --foundAt < 0) {
-						foundAt = $items.length - 1;
-					}
+		$checkboxes.on('change', function () {
+			updateReadout();
+		}).first().change();
 
-					$($items[foundAt])
-					.trigger('focus');
+		// hitting Esc on a checkbox closes the panel & focuses it back
+		// so does losing focus
+		let unfocused = 0;
+		$checkboxes.on('keyup', function (e) {
+			if (e.code == 'Escape') {
+				closeOptionsPanel();
+				$button.focus();
 			}
-		})
-		.on(getNamespacedEvents(['focus']), 'a, button, :input', function() {
-			$(this)
-			.parents('li:last')
-			.addClass('focused');
-		})
-		.on(getNamespacedEvents(['blur']), 'a, button, :input', function() {
-			$(this)
-			.parents('li:last')
-			.removeClass('focused');
-		})
-		.on(getNamespacedEvents(['change']), ':checkbox', function() {
-			if(that.$allToggle && $(this).is(that.$allToggle.find(':checkbox'))) {
-				var allChecked = that.$allToggle
-				.find(':checkbox')
-				.prop("checked");
-				
-				that.$element
-				.find(':checkbox')
-				.not(that.$allToggle.find(":checkbox"))
-				.each(function(){
-					$(this).prop("checked", allChecked);
-					$(this)
-					.parents('li:last')
-					.toggleClass('selected', $(this).prop('checked'));
-				});
-				
-				updateLabel.apply(that);
-				return;
-			}
-			
-			$(this)
-			.parents('li:last')
-			.toggleClass('selected', $(this).prop('checked'));
-			
-			var checkboxes = that.$element.find(":checkbox");
-			if (that.$allToggle) {
-				checkboxes = checkboxes.not(that.$allToggle.find(":checkbox"));
-			}
-			checkboxes = checkboxes.filter(":checked");
-			
-			if (that.$allToggle) {
-				that.$allToggle.find(":checkbox").prop("checked", checkboxes.length === checkboxes.end().length);
-			}
-
-			updateLabel.apply(that);
-		})
-		.on(getNamespacedEvents(['mouseover']), 'ul', function() {
-			$(this)
-			.children(".focused")
-			.removeClass("focused");
 		});
-	}
-	
-	function updateLabel() {
-		var pluralize = function(wordSingular, count) {
-			if(count !== 1) {
-				switch(true) {
-					case /y$/.test(wordSingular):
-						wordSingular = wordSingular.replace(/y$/, "ies");
-					default:
-						wordSingular = wordSingular + "s";
-				}
-			}			
-			return wordSingular;
-		}
-		
-		var $checkboxes = this.$element
-		.find('ul :checkbox');
-		
-		var allCount = $checkboxes.length;
-		var checkedCount = $checkboxes.filter(":checked").length;
+		setInterval(function () {
+			const stillfocused = $button.is(':focus') || $fieldset.is(':focus') || $checkboxes.filter(':focus').length;
 
-		var label;
-		if (checkedCount && checkedCount === allCount) {
-			label = '(all)';
-		} else if (checkedCount) {
-			label = this.options.defaultLabelText + ", " + checkedCount + " selected";
-		} else {
-			label = this.options.defaultLabelText;
-		}
+			if (stillfocused) unfocused = 0;
+			else unfocused += 1;
+			if (unfocused > 2) closeOptionsPanel();
+		}, 0.1 * 1000);
 
-		this.$toggle.children("label").text(label);
-		
-		this.$element.find('ul').attr("aria-label", label + " of " + allCount + " " + pluralize("item", allCount));
-	}
-	
-	function ensureFocus() {
-		this.$element
-		.children("ul:first")
-		.find(":input, button, a")
-		.first()
-		.trigger('focus')
-		.end()
-		.end()
-		.find(":checked")
-		.first()
-		.trigger('focus');
-	}
-	
-	function addBackdrop() {
-		if(this.$backdrop) {
-			return;
-		}
-		
-		var that = this;
-		this.$backdrop = $("<div class='multi-select-backdrop'/>");
-		this.$element.append(this.$backdrop);
-		
-		this.$backdrop
-		.on('click', function() {
-			$(this)
-			.off('click')
-			.remove();
-			
-			that.$backdrop = null;			
-			that.close();
-		});
-	}
-	
-	function open() {
-		if(this.$element.hasClass('in')) {
-			return;
-		}
-
-		this.$element
-		.addClass('in');
-		
-		this.$element
-		.attr('aria-expanded', true)
-		.attr('aria-haspopup', true);
-
-		addBackdrop.apply(this);
-		//ensureFocus.apply(this);
-	}
-	
-	function close() {
-		this.$element
-		.removeClass('in')
-		.trigger('focus');
-		
-		this.$element
-		.attr('aria-expanded', false)
-		.attr('aria-haspopup', false);
-
-		if(this.$backdrop) {
-			this.$backdrop.trigger('click');
-		}
-	}	
+		// done
+		return this;
+   }; 
 })(jQuery);
-
-$(document).ready(function(){
-	$('#multi-select-plugin')
-	.MultiSelect();
-});

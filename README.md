@@ -4,7 +4,7 @@ A multi-select UI which expands into checkboxes. Accessibility in mind.
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/3117633/163845925-7ddbff56-3f19-4c0b-a544-86add9315790.png)
+![image](https://user-images.githubusercontent.com/3117633/168843379-4e15aef7-6032-4c90-93e4-97b24dc5d3e7.png)
 
 
 
@@ -13,15 +13,14 @@ A multi-select UI which expands into checkboxes. Accessibility in mind.
 Use HTML like this:
 
 ```
-<div id="checkboxset-yearsinplace" aria-label="Pick a few">
-    <span class="toggle"><label class="small">Pick a few</label> <span class="chevron">&lt;</span></span>
+<div id="checkboxset-location" title="Locations">
+    <button><span></span><span></span></button>
     <fieldset>
-        <legend></legend>
-        <ul>
-            <li><label><input type="checkbox" name="something[]" value="ABC"/> Option One</label></li>
-            <li><label><input type="checkbox" name="something[]" value="DEF"/> Option Two</label></li>
-            <li><label><input type="checkbox" name="something[]" value="GHI"/> Option Three</label></li>
-        </ul>
+        <div>
+            <label><input type="checkbox" name="something[]" value="ABC"/> Option One</label>
+            <label><input type="checkbox" name="something[]" value="DEF"/> Option Two</label>
+            <label><input type="checkbox" name="something[]" value="GHI"/> Option Three</label>
+        </div>
     </fieldset>
 </div>
 ```
@@ -29,31 +28,18 @@ Use HTML like this:
 Then JavaScript like this:
 ```
 $('#checkboxset-location').MultiSelect();
-```
 
-Or like this to specify options:
-```
 $('#checkboxset-location').MultiSelect({
-    enableToggleAll: true,  // add a "all" option to toggle all choices    
+    allowSelectAll: true,
 });
 ```
 
 
-## Caveats
-
-The displayed label will not auto-detect its checkboxes having changed, and will not automatically refresh the labels to match the checked boxes. If you programmatically change the checkboxes, call a `change` event on them, and this will refresh the label.
-
-```
-$('#that-multipicker input[type="checkbox"][value="vanilla"]').prop('checked', false).change();
-```
-
 
 ## History & Credits
 
-The original code was a Codepen by rdmchenry: https://codepen.io/rdmchenry/pen/OyzVEx
+The original version of this MuliSelect (April 2022) was based on a Codepen by rdmchenry: https://codepen.io/rdmchenry/pen/OyzVEx However, on later testing it really wasn't meeting our accessibility needs for keyboard navigability etc.
 
-GreenInfo Network adapted this to their own use case and added some styling.
-- added `<fieldset>` and `<legend>` elements for screen readers
-- added `enableToggleAll` option
-- changed label behavior
-- added an optional Bootstrap 5 stylesheet
+In May 2022 the MultiSelect was rewritten from scratch for keyboard nav and a11y from the ground up, and to be a cleaner jQuery function. The code is all original but is based on ideas and behaviors in a Codepen by Allison Ravenhall https://codepen.io/a11yally/pen/vmXPMR.
+
+Also in May 2022, GreenInfo added a few new behaviors such as auto-assigning ARIA labels from the `title` attribute and the "Select all" checkbox.

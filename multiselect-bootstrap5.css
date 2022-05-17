@@ -1,15 +1,25 @@
 /**
- * Original code by rdmchenry
- * https://codepen.io/rdmchenry/pen/OyzVEx
- * Adapted by GreenInfo Network to include some a11y improvements, new features, and Bootstrap-like styling.
+ * GreenInfo Network MultiSelect
  * https://github.com/GreenInfo-Network/MultiSelect
+ * Inspired from code by Allison Ravenhall https://codepen.io/a11yally/pen/vmXPMR
  */
 
-div.multi-select {
-    width: 100%;
+div.multi-select button {
+    height: 2.4em;
 }
-div.multi-select span.toggle {
-    border: 1px solid #ced4da;
+
+div.multi-select fieldset {
     border-radius: 0.25rem;
-    padding: 0.375em 0.5em;
+}
+
+div.multi-select button {
+    border-radius: 0.25rem;
+}
+
+div.multi-select .multi-select-readout {
+    color: #333333;
+}
+
+div.multi-select .multi-select-readout.multi-select--placeholder {
+    color: #666666;
 }
