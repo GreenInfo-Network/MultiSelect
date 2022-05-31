@@ -52,6 +52,7 @@ div.multi-select fieldset {
 
     max-height: 1in;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 div.multi-select fieldset label {
