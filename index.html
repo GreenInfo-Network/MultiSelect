@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="multiselect.css" />
+    <script type="text/javascript" src="multiselect.js"></script>
+
+</head>
+<body onLoad="init();">
+
+
+<script>
+function init () {
+    $('#checkboxset-counties').MultiSelect();
+}
+</script>
+
+
+<style>
+#some-layout-cell {  /* could be a Bootstrap col or whatever */
+    width: 300px;
+}
+</style>
+
+
+<div id="some-layout-cell">
+    <div id="checkboxset-counties" title="Counties">
+        <button><span></span><span></span></button>
+        <fieldset>
+            <div>
+                <label><input type="checkbox" name="something[]" value="ABC"/> Option One</label>
+                <label><input type="checkbox" name="something[]" value="DEF"/> Option Two</label>
+                <label><input type="checkbox" name="something[]" value="GHI"/> Option Three</label>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+
+
+</body>
+</html>
