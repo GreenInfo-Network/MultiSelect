@@ -2,8 +2,6 @@
 <html>
 <head>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" type="text/css" href="multiselect.css" />
     <script type="text/javascript" src="multiselect.js"></script>
 
@@ -13,7 +11,7 @@
 
 <script>
 function init () {
-    $('#checkboxset-counties').MultiSelect();
+    MultiSelect('checkboxset-counties', {});
 }
 </script>
 
@@ -23,6 +21,19 @@ function init () {
     width: 300px;
 }
 </style>
+
+
+<h1>MultiSelect Demo</h1>
+
+<p>A multiple-choice selector with accessibility in mind.</p>
+
+<ul>
+    <li>Keyboard triggered, focused, and operated.</li>
+    <li>Has ARIA indicators used byt screenreaders.</li>
+    <li>Lightweight, no dependencies. Even works in IE11.</li>
+</ul>
+
+<p>See <a href="https://github.com/GreenInfo-Network/MultiSelect">https://github.com/GreenInfo-Network/MultiSelect</a> for more details and documentation.</p>
 
 
 <div id="some-layout-cell">

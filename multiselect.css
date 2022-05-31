@@ -18,6 +18,30 @@ div.multi-select button {
     text-align: left;
 }
 
+div.multi-select button span.multi-select-arrow-collapsed,
+div.multi-select button span.multi-select-arrow-expanded {
+  	display: inline-block;
+  	border-right: 2px solid black;
+	border-bottom: 2px solid black;
+  	width: 10px;
+  	height: 10px;
+
+    position: absolute;
+    right: 1em;
+    top: 0.9em;
+    color: #a8a8a8;
+    transition: transform .1s ease-out, color .1s ease-out;
+    font-size: 0.85em;
+}
+div.multi-select button span.multi-select-arrow-collapsed {
+  	transform: rotate(45deg);
+  	margin-top: -2px;
+}
+div.multi-select button span.multi-select-arrow-expanded {
+  	transform: rotate(-135deg);
+  	margin-top: 3px;
+}
+
 div.multi-select .multi-select-readout {
     color: black;
 }
@@ -28,14 +52,18 @@ div.multi-select .multi-select-readout.multi-select--placeholder {
 
 div.multi-select fieldset {
     border: none;
-    padding-left: 0;
-    margin-left: 0;
+    padding: 0;
+    margin: 0;
 
     position: absolute;
     top: 2.2rem;
     left: 0;
     z-index: 1;
     background: white;
+}
+
+div.multi-select fieldset > div {
+	padding: 0.5em 0;
 }
 
 div.multi-select fieldset legend {
@@ -59,18 +87,4 @@ div.multi-select fieldset label {
     display: block;
     width: 100%;
     padding: 0 10px 0 5px;
-}
-
-div.multi-select .multi-select-arrow {
-    position: absolute;
-    right: 1em;
-    top: 0.9em;
-    color: #a8a8a8;
-    transition: transform .2s ease-out, color .2s ease-out;
-    font-size: 0.85em;
-}
-
-div.multi-select .multi-select-arrow--open {
-  transform: rotate(-180deg) translate(0, 2px);
-  color: #404040;
 }

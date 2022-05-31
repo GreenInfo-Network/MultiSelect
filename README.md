@@ -1,11 +1,13 @@
 # MultiSelect
 
-A multi-select UI which expands into checkboxes. Accessibility in mind.
+A multiple-choice selector with accessibility in mind.
+
+* Keyboard triggered, focused, and operated.
+* Has ARIA indicators used byt screenreaders.
+* Lightweight, no dependencies. Even works in IE11.
+
 
 https://github.com/GreenInfo-Network/MultiSelect
-
-
-## Demo and Screenshots
 
 https://greeninfo-network.github.io/MultiSelect/
 
@@ -32,7 +34,9 @@ Use HTML like this:
 
 Then JavaScript like this:
 ```
-$('#checkboxset-location').MultiSelect();
+MultiSelect('checkboxset-location', {
+    allowSelectAll: true,
+});
 ```
 
 
