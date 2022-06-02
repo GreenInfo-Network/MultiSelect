@@ -50,6 +50,15 @@ const MultiSelect = (divid, options={}) => {
 		});
 
         $optiondiv.insertBefore($all, $optiondiv.querySelector('label')); // insert before 1st
+
+        // if all options are checked already, check this one too so it matches the all/none state
+        let howmany = 0;
+        for (let i=0; i<$checkboxes.length; i++) {
+            if ($checkboxes[i].checked) howmany += 1;
+        }
+        if (howmany == $checkboxes.length) {
+            $allcb.checked = true;
+        }
     }
 
     // add the click trigger which shows the option list, then hide the options list
@@ -74,7 +83,6 @@ const MultiSelect = (divid, options={}) => {
         else openOptionsPanel();
     });
     closeOptionsPanel();
-
 
     // set ARIA label
     // when checkboxes change, update the button with a readout of how many are selected
