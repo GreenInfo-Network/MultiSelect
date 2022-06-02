@@ -9,6 +9,8 @@ const MultiSelect = (divid, options={}) => {
     this.options = Object.assign({
         allowSelectAll: "Select all/none", // set the label for the Select All option, or set false to not add it
         ariaLabel: undefined, // manually assign an ARIA label; if absent, will use the element's "title" attribute
+        selectedText: "selected", // when updateReadout redraws "X selected" this is the wording used
+        selectedTextAll: "", // when updateReadout redraws "X selected" and all options are selected, this is the wording used instead
     }, options);
     this.options.divid = divid;
 
@@ -96,7 +98,11 @@ const MultiSelect = (divid, options={}) => {
             $readout.innerText = arialabel;
             $button.classList.add('multi-select--placeholder');
         } else {
-            $readout.innerText = `${arialabel}, ${howmany} selected`;
+            if (howmany == $checkboxes.length && this.options.selectedTextAll) {
+                $readout.innerText = `${arialabel}, ${this.options.selectedTextAll}`;
+            } else {
+                $readout.innerText = `${arialabel}, ${howmany} ${this.options.selectedText}`;
+            }
             $button.classList.remove('multi-select--placeholder');
         }
     }

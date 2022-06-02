@@ -35,7 +35,8 @@ Use HTML like this:
 Then JavaScript like this:
 ```
 MultiSelect('checkboxset-location', {
-    allowSelectAll: true,
+    allowSelectAll: "select all/none",
+    selectedText: "chosen",
 });
 ```
 
@@ -46,6 +47,9 @@ MultiSelect('checkboxset-location', {
 
 * `ariaLabel` -- Manually assign an ARIA label. If absent, the element's "title" attribute will be used (if given).
 
+* `selectedText` -- Change the text of the "X selected" readout when options are selected.
+
+* `selectedTextAll` -- Change the text of the "X selected" readout when all options are selected. Default is the "X selected" text described in `selectedText`.
 
 
 ## History & Credits
