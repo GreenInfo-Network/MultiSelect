@@ -4,7 +4,7 @@
  * Inspired from code by Allison Ravenhall https://codepen.io/a11yally/pen/vmXPMR
  */
 
-const MultiSelect = (divid, options) => {
+const MultiSelect = (divid, options={}) => {
     // set our options & defaults
     this.options = Object.assign({
         allowSelectAll: "Select all/none", // set the label for the Select All option, or set false to not add it
