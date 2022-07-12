@@ -47,6 +47,7 @@ const MultiSelect = (divid, options={}) => {
                 $checkboxes[i].checked = $allcb.checked;
             }
             updateReadout();
+            $allcb.focus();
 		});
 
         $optiondiv.insertBefore($all, $optiondiv.querySelector('label')); // insert before 1st
@@ -62,25 +63,29 @@ const MultiSelect = (divid, options={}) => {
     }
 
     // add the click trigger which shows the option list, then hide the options list
-    function openOptionsPanel () {
+    function openOptionsPanel (withfocus) {
         $button.setAttribute('aria-expanded', 'true');
         $fieldset.style.display = 'block';
         $arrow.classList.remove('multi-select-arrow-collapsed');
         $arrow.classList.add('multi-select-arrow-expanded');
 
         $fieldset.style.width = `${$button.clientWidth}px`;
+
+        if (withfocus) $button.focus();
     }
-    function closeOptionsPanel () {
+    function closeOptionsPanel (withfocus) {
         $button.setAttribute('aria-expanded', 'false');
         $fieldset.style.display = 'none';
         $arrow.classList.add('multi-select-arrow-collapsed');
         $arrow.classList.remove('multi-select-arrow-expanded');
+
+        if (withfocus) $button.focus();
     }
 
     $button.addEventListener('click', () => {
         const showing = $button.getAttribute('aria-expanded') == 'true';
-        if (showing) closeOptionsPanel();
-        else openOptionsPanel();
+        if (showing) closeOptionsPanel(true);
+        else openOptionsPanel(true);
     });
     closeOptionsPanel();
 
@@ -118,6 +123,7 @@ const MultiSelect = (divid, options={}) => {
     for (let i=0; i<$checkboxes.length; i++) {
         $checkboxes[i].addEventListener('change', function () {
             updateReadout();
+            $checkboxes[i].focus();
         });
     }
     updateReadout();
