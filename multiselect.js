@@ -11,6 +11,7 @@ const MultiSelect = (divid, options={}) => {
         ariaLabel: undefined, // manually assign an ARIA label; if absent, will use the element's "title" attribute
         selectedText: "selected", // when updateReadout redraws "X selected" this is the wording used
         selectedTextAll: "", // when updateReadout redraws "X selected" and all options are selected, this is the wording used instead
+        searchText: "search", // set the label for the search box, or set false to not add it
     }, options);
     this.options.divid = divid;
 
@@ -21,7 +22,7 @@ const MultiSelect = (divid, options={}) => {
     const $arrow = $button.querySelector('span:last-of-type');
     const $fieldset = $container.querySelector(':scope > fieldset');
     const $optiondiv = $fieldset.querySelector(':scope > div');
-    const $checkboxes = $optiondiv.querySelectorAll('input[type="checkbox"]'); // will not include $allcb if added
+    const $checkboxes = $optiondiv.querySelectorAll('input[type="checkbox"]'); // will not include $selectallcb if added
 
     // add starting CSS classes
     $container.classList.add('multi-select');
@@ -36,21 +37,21 @@ const MultiSelect = (divid, options={}) => {
     $readout.classList.add('multi-select-readout');
 
     // if allowSelectAll is enabled, prepend a new checkbox & label to the list, which will toggle all of the real $checkboxes
-    let $allcb;
+    let $selectall, $selectallcb;
     if (this.options.allowSelectAll) {
-        const $all = document.createElement('label');
-        $all.innerHTML = `<input type="checkbox" /> ${this.options.allowSelectAll}`;
-        $allcb = $all.querySelector('input[type="checkbox"]');
+        $selectall = document.createElement('label');
+        $selectall.innerHTML = `<input type="checkbox" /> ${this.options.allowSelectAll}`;
+        $selectallcb = $selectall.querySelector('input[type="checkbox"]');
 
-		$allcb.addEventListener('change', () => {
+		$selectallcb.addEventListener('change', () => {
             for (let i=0; i<$checkboxes.length; i++) {
-                $checkboxes[i].checked = $allcb.checked;
+                $checkboxes[i].checked = $selectallcb.checked;
             }
             updateReadout();
-            $allcb.focus();
+            $selectallcb.focus();
 		});
 
-        $optiondiv.insertBefore($all, $optiondiv.querySelector('label')); // insert before 1st
+        $optiondiv.insertBefore($selectall, $optiondiv.querySelector('label')); // insert before 1st
 
         // if all options are checked already, check this one too so it matches the all/none state
         let howmany = 0;
@@ -58,7 +59,48 @@ const MultiSelect = (divid, options={}) => {
             if ($checkboxes[i].checked) howmany += 1;
         }
         if (howmany == $checkboxes.length) {
-            $allcb.checked = true;
+            $selectallcb.checked = true;
+        }
+    }
+
+    // if searchText is enabled, prepend a text box for searching/filtering
+    let $searchtextbox;
+    if (this.options.searchText) {
+        $searchtextbox = document.createElement('input');
+        $searchtextbox.type = 'text';
+        $searchtextbox.placeholder = this.options.searchText;
+        $searchtextbox.setAttribute('aria-label', this.options.searchText);
+
+        $optiondiv.insertBefore($searchtextbox, $optiondiv.querySelector('label')); // insert before 1st
+
+        $searchtextbox.addEventListener('change', () => filterCheckboxesByTextBox() );
+        $searchtextbox.addEventListener('keyup', () => filterCheckboxesByTextBox() );
+    }
+    function filterCheckboxesByTextBox () {
+        const searchtext = $searchtextbox.value;
+        filterCheckboxesByText(searchtext);
+    }
+    function filterCheckboxesByText (searchtext) {
+        // case-insensitive search
+        searchtext = searchtext.toUpperCase();
+
+        // show/hide the all-none checkbox
+        if (searchtext) {
+            $selectall.style.display = 'none';
+        } else {
+            $selectall.style.display = 'block';
+        }
+
+        // show/hide each checkbox
+        for (let i=0; i<$checkboxes.length; i++) {
+            const $lbl = $checkboxes[i].closest('label');
+            const txt = $lbl.innerText.trim().toUpperCase();
+
+            if (searchtext && txt.indexOf(searchtext) === -1) {
+                $lbl.style.display = 'none';
+            } else {
+                $lbl.style.display = 'block';
+            }
         }
     }
 
@@ -144,7 +186,8 @@ const MultiSelect = (divid, options={}) => {
         let hasfocus = false;
         if (document.activeElement == $button) hasfocus = true;
         else if (document.activeElement == $fieldset) hasfocus = true;
-        else if (document.activeElement == $allcb) hasfocus = true;
+        else if (document.activeElement == $selectallcb) hasfocus = true;
+        else if (document.activeElement == $searchtextbox) hasfocus = true;
         else {
             for (let i=0; i<$checkboxes.length; i++) {
                 if (document.activeElement == $checkboxes[i]) { hasfocus = true; break; }
