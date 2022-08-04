@@ -43,13 +43,15 @@ MultiSelect('checkboxset-location', {
 
 ## Constructor Options
 
-* `allowSelectAll` -- Set the label for the Select All which will be prepended as the first checkbox. You can also set it to `false` or an emptry string, to not add the Select All checkbox.
+* `allowSelectAll` -- Set the label for the Select All which will be prepended as the first checkbox. Set it to `false` or an empty string, to not add the Select All checkbox.
 
 * `ariaLabel` -- Manually assign an ARIA label. If absent, the element's "title" attribute will be used (if given).
 
 * `selectedText` -- Change the text of the "X selected" readout when options are selected.
 
 * `selectedTextAll` -- Change the text of the "X selected" readout when all options are selected. Default is the "X selected" text described in `selectedText`.
+
+* `searchText` -- Set the placeholder text for the search box. Set it to `false` or an empty string, to not add the search box.
 
 
 ## History & Credits
