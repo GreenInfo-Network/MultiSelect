@@ -85,10 +85,12 @@ const MultiSelect = (divid, options={}) => {
         searchtext = searchtext.toUpperCase();
 
         // show/hide the all-none checkbox
-        if (searchtext) {
-            $selectall.style.display = 'none';
-        } else {
-            $selectall.style.display = 'block';
+        if ($selectall) {
+            if (searchtext) {
+                $selectall.style.display = 'none';
+            } else {
+                $selectall.style.display = 'block';
+            }
         }
 
         // show/hide each checkbox
