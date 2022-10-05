@@ -34,7 +34,7 @@ Use HTML like this:
 
 Then JavaScript like this:
 ```
-MultiSelect('checkboxset-location', {
+MultiSelect('checkboxset-location', { // the element ID here
     allowSelectAll: "select all/none",
     selectedText: "chosen",
 });
@@ -52,6 +52,13 @@ MultiSelect('checkboxset-location', {
 * `selectedTextAll` -- Change the text of the "X selected" readout when all options are selected. Default is the "X selected" text described in `selectedText`.
 
 * `searchText` -- Set the placeholder text for the search box. Set it to `false` or an empty string, to not add the search box.
+
+
+## Bootstrap Stylesheet
+
+Optionally, you can bring in one of the `multiselect-bootstrapX.css` stylesheets, which will style the resulting MultiSelect to look more like Bootstrap controls.
+
+If using a Bootstrap stylesheet, you can also add `class="multi-select-sm"` to the container DIV to give it a smaller height matching BS's `form-control-sm`
 
 
 ## History & Credits
