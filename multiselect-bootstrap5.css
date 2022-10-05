@@ -34,3 +34,10 @@ div.multi-select fieldset input[type="checkbox"] {
     border-radius: 0.25em;
     border: 1px solid rgba(0,0,0,.25);
 }
+
+div.multi-select.multi-select-sm button {
+    height: 1.95em;
+}
+div.multi-select.multi-select-sm button span.multi-select-arrow-collapsed {
+    margin-top: -4px;
+}
