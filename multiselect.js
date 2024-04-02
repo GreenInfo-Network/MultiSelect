@@ -52,15 +52,6 @@ const MultiSelect = (divid, options={}) => {
 		});
 
         $optiondiv.insertBefore($selectall, $optiondiv.querySelector('label')); // insert before 1st
-
-        // if all options are checked already, check this one too so it matches the all/none state
-        let howmany = 0;
-        for (let i=0; i<$checkboxes.length; i++) {
-            if ($checkboxes[i].checked) howmany += 1;
-        }
-        if (howmany == $checkboxes.length) {
-            $selectallcb.checked = true;
-        }
     }
 
     // if searchText is enabled, prepend a text box for searching/filtering
@@ -161,6 +152,11 @@ const MultiSelect = (divid, options={}) => {
                 $readout.innerText = `${arialabel}, ${howmany} ${this.options.selectedText}`;
             }
             $button.classList.remove('multi-select--placeholder');
+        }
+
+        // $allcb should be checked if any only if all $checkboxes options are checked
+        if ($allcb) {
+            $allcb.checked = allchecked;
         }
     }
 
