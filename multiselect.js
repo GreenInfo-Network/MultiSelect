@@ -154,9 +154,9 @@ const MultiSelect = (divid, options={}) => {
             $button.classList.remove('multi-select--placeholder');
         }
 
-        // $allcb should be checked if any only if all $checkboxes options are checked
-        if ($allcb) {
-            $allcb.checked = allchecked;
+        // $selectallcb should be checked if any only if all $checkboxes options are checked
+        if ($selectallcb) {
+            $selectallcb.checked = $checkboxes.length == howmany;
         }
     }
 
