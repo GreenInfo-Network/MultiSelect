@@ -83,7 +83,7 @@ div.multi-select fieldset {
     width: 100%;
     border-radius: 2px;
 
-    max-height: 1in;
+    max-height: 3in;
     overflow-y: auto;
     overflow-x: hidden;
 }
