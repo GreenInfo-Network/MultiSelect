@@ -147,9 +147,17 @@ const MultiSelect = (divid, options={}) => {
             $button.classList.add('multi-select--placeholder');
         } else {
             if (howmany == $checkboxes.length && this.options.selectedTextAll) {
-                $readout.innerText = `${arialabel}, ${this.options.selectedTextAll}`;
+                if (arialabel) {
+                    $readout.innerText = `${arialabel}, ${this.options.selectedTextAll}`;
+                } else {
+                    $readout.innerText = `${this.options.selectedTextAll}`;
+                }
             } else {
-                $readout.innerText = `${arialabel}, ${howmany} ${this.options.selectedText}`;
+                if (arialabel) {
+                    $readout.innerText = `${arialabel}, ${howmany} ${this.options.selectedText}`;
+                } else {
+                    $readout.innerText = `${howmany} ${this.options.selectedText}`;
+                }
             }
             $button.classList.remove('multi-select--placeholder');
         }
